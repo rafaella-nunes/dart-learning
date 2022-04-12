@@ -1,7 +1,8 @@
 void main() {
   var deck = new Deck();
-  deck.shuffle();
-  print(deck.cardsWithSuit('Diamonds'));
+  print(deck);
+  deck.removeCard('Hearts', 'Ace');
+  print(deck);
 }
 
 class Deck {
@@ -27,7 +28,7 @@ class Deck {
 
     for (var suit in suits) {
       for (var rank in ranks) {
-        var card = new Card(rank, suit);
+        var card = new Card(rank: rank, suit: suit);
         cards.add(card);
       }
     }
@@ -44,13 +45,24 @@ class Deck {
   cardsWithSuit(String suit) {
     return cards.where((card) => card.suit == suit);
   }
+
+  deal(int handSize) {
+    var hand = cards.sublist(0, handSize);
+    cards = cards.sublist(handSize);
+
+    return hand;
+  }
+
+  removeCard(String rank, String suit) {
+    return cards.removeWhere((card) => card.suit == suit && card.rank == rank);
+  }
 }
 
 class Card {
   String rank = '';
   String suit = '';
 
-  Card(this.rank, this.suit);
+  Card({required this.rank, required this.suit});
 
   toString() {
     return '$rank of $suit';
